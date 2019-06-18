@@ -1,0 +1,72 @@
+<div class="container top">
+  <div class="row">
+      <div class="col-md-12 " >
+        <h2 >Banks Search Application
+          </h2>
+    </div>
+    </div>
+    <app-spiner *ngIf="showSpinner"></app-spiner>
+    <div class="row drop" *ngIf="!showSpinner">
+      <div class="col-md-10 mx-auto" >
+          <select class="form-control" [(ngModel)]="selectedcity" (ngModelChange)="setSelectedcity(selectedcity)">
+              <option value="">Select city</option>  
+            <option *ngFor="let city of cities" [value]="city">{{city}}
+              </option>
+           </select>
+    </div>
+    </div>
+<div class="row">
+  <div class="col-md-10 mx-auto"  >
+    
+      <table class="table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger" [dtTrigger]="dtTrigger" >  
+        <thead>
+            <tr *ngIf="!showSpinner" >
+                <th>ifsc</th>
+                <th>bank_id</th>
+                <th>branch</th>
+                <th>address</th>
+                <th>city</th>
+                <th>district</th>
+                <th>state</th> 
+                <th>bank_name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor= "let bank of banks  | filter:selectedcity:'city' ;">
+                 
+              <td >
+                  <ng-container  *ngFor="let f of fav;  let i = index" [attr.data-index]="i" >
+                    <ng-container *ngIf="bank.ifsc==f; then thenBlock else elseBlock"  >                    
+                       </ng-container>
+                        <ng-template #thenBlock >
+                          
+                          <span style="color:blue">{{bank.ifsc}}</span>
+                        </ng-template>
+                  <ng-template #elseBlock > 
+                      <ng-container *ngIf="(i+1)==fav.length && bank.ifsc!='ABHY0065003' && bank.ifsc!='ABHY0065001'  ; then thenBlock1 else elseBlock1"></ng-container>
+                      <ng-template #thenBlock1>{{bank.ifsc}}</ng-template>
+                      <ng-template #elseBlock1></ng-template>
+
+                    </ng-template>
+
+                  </ng-container>
+            </td>
+              
+                <td>{{bank.bank_id}}</td>
+                <td>{{bank.branch}}</td>
+                <td>{{bank.address}}</td>
+                <td>{{bank.city}}</td>
+                <td>{{bank.district}}</td>
+                <td>{{bank.state}}</td>
+                <td>{{bank.bank_name}}</td>
+            </tr>
+           
+        </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+
+
