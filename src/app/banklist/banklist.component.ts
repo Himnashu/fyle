@@ -1,5 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
-import { Response } from '@angular/http';
+import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 // import { startWith } from 'rxjs/operators';
@@ -8,19 +7,20 @@ import { Router, NavigationExtras } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { DataTableDirective } from 'angular-datatables';
 
-import {map, startWith} from 'rxjs/operators';
-const CACHE_KEY="httpbankCache";
 
 @Component({
   selector: 'app-banklist',
   templateUrl: './banklist.component.html',
   styleUrls: ['./banklist.component.css']
 })
-export class BanklistComponent implements OnInit {
+export class BanklistComponent implements OnInit  {
+  
   // @ViewChild('dataTable') table;
   @ViewChild(DataTableDirective)static : false
   datatableElement: DataTableDirective;
-  
+  dtInstance: any;
+
+
   cities = []; 
   selectedcity : string = "";
   dtOptions: any;
@@ -56,6 +56,7 @@ export class BanklistComponent implements OnInit {
     // this._router.navigate(['bank/',]);
   }
   ngOnInit(): void {
+
     this.cities=['MUMBAI', 'Delhi', 'Jaipur', 'Alwar', 'Bangalore'];
     this.fav=[ 'ABHY0065001', 'ABHY0065003' ,'ABHY0065004'];
     this.dtOptions = { 
@@ -69,8 +70,7 @@ export class BanklistComponent implements OnInit {
         // (see https://github.com/l-lin/angular-datatables/issues/87)
         $('td', row).unbind('click');
         $('td', row).bind('click', () => {
-          this.message=data;
-          console.log(data);
+        
           self.someClickHandler(data);
         });
         return row;
@@ -78,17 +78,34 @@ export class BanklistComponent implements OnInit {
     };
     this.data.loaddata().subscribe(data => {
       this.banks = data;
-      console.log(this.banks);
       this.dtTrigger.next();
       this.showSpinner = false;
     });
      
        
   }
+  //  ngOnChanges() {
+  //   if(this.selectedcity){
+  //     console.log(this.selectedcity)
+  //       //if(changes.selected.currentValue !=== changes.selected.previousValue){
+  //         this.banks = this.banks.filter(x => {
+  //           console.log(x.city, this.selectedcity)
+  //           return x.city === this.selectedcity
+            
+  //         })
+  //         console.log(this.banks)
+  //       //}
+  //   }
+  // }
 
   setSelectedcity(city : string){
     this.selectedcity=city;
-    console.log(this.selectedcity);
+      this.banks=this.banks.filter(x => x.city==this.selectedcity);
+      console.log(this.banks);
+      //console.log(this.banks);
+      this.dtTrigger.next();
+      this.showSpinner = false;
+  //  console.log(this.selectedcity);
   //   if(this.banks.length === 0  || this.selectedcity===''){
   //     return this.banks;
   //   }
@@ -114,6 +131,7 @@ export class BanklistComponent implements OnInit {
   
   
   ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
+  //this.dtTrigger.unsubscribe();
   }
+ 
 }

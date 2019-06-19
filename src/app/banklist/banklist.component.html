@@ -15,6 +15,7 @@
            </select>
     </div>
     </div>
+
 <div class="row">
   <div class="col-md-10 mx-auto"  >
     
@@ -33,7 +34,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor= "let bank of banks  | filter:selectedcity:'city' ;">
+            <tr *ngFor= "let bank of banks ;">
                  
               <td >
                   <ng-container  *ngFor="let f of fav;  let i = index" [attr.data-index]="i" >
@@ -44,7 +45,7 @@
                           <span style="color:blue">{{bank.ifsc}}</span>
                         </ng-template>
                   <ng-template #elseBlock > 
-                      <ng-container *ngIf="(i+1)==fav.length && bank.ifsc!='ABHY0065003' && bank.ifsc!='ABHY0065001'  ; then thenBlock1 else elseBlock1"></ng-container>
+                      <ng-container *ngIf="(i+1)==fav.length && bank.ifsc!=fav[1] && bank.ifsc!=fav[0]  ; then thenBlock1 else elseBlock1"></ng-container>
                       <ng-template #thenBlock1>{{bank.ifsc}}</ng-template>
                       <ng-template #elseBlock1></ng-template>
 
@@ -63,6 +64,19 @@
             </tr>
            
         </tbody>
+        <tfoot>
+            <tr>
+              <th><input type="text" placeholder="Search ID" name="search-id"/></th>
+              <th><input type="text" placeholder="Search ID" name="search-id"/></th>
+              <th><input type="text" placeholder="Search ID" name="search-id"/></th>
+              <th><input type="text" placeholder="Search ID" name="search-id"/></th>
+              <th><input type="text" placeholder="Search ID" name="search-id"/></th>
+              <th><input type="text" placeholder="Search ID" name="search-id"/></th>
+
+              <th><input type="text" placeholder="Search first name" name="search-first-name"/></th>
+              <th><input type="text" placeholder="Search last name" name="search-last-name"/></th>
+            </tr>
+          </tfoot>
     </table>
   </div>
 </div>
